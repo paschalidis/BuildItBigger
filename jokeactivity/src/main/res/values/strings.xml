@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">jokeActivity</string>
+    <string name="default_joke_text">No Jokes Today!!!</string>
 </resources>
