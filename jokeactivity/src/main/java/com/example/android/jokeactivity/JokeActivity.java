@@ -24,7 +24,9 @@ public class JokeActivity extends AppCompatActivity {
         if (intent != null) {
             if (intent.hasExtra(JOKE_EXTRA)) {
                 mJoke = intent.getStringExtra(JOKE_EXTRA);
-                mJokeView.setText(mJoke);
+                if(mJoke != null){
+                    mJokeView.setText(mJoke);
+                }
             }
         }
     }

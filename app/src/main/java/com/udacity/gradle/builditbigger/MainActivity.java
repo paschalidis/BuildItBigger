@@ -1,18 +1,20 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.android.javajokes.Joker;
 import com.example.android.jokeactivity.JokeActivity;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +46,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        Joker joker = new Joker();
-        String joke = joker.getJoke();
+        getLoaderManager().initLoader(0, null, this);
+    }
 
+
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new JokeLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        startJokeActivity(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+
+    }
+
+    private void startJokeActivity(String joke) {
         Intent intentToJokeActivity = new Intent(this, JokeActivity.class);
         intentToJokeActivity.putExtra(JokeActivity.JOKE_EXTRA, joke);
         startActivity(intentToJokeActivity);
     }
-
-
 }

@@ -23,10 +23,15 @@ public class MyEndpoint {
     @ApiMethod(name = "sayHi")
     public MyBean sayHi(@Named("name") String name) {
         MyBean response = new MyBean();
+        response.setData("Hi, " + name);
+        return response;
+    }
+
+    @ApiMethod(name = "joke")
+    public MyBean joke(){
         Joker joker = new Joker();
-        String joke = joker.getJoke();
-        //response.setData("Jolo, " + name);
-        response.setData(joke);
+        MyBean response = new MyBean();
+        response.setData(joker.getJoke());
         return response;
     }
 
