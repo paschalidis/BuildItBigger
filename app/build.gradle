@@ -3,6 +3,7 @@ apply plugin: 'com.google.cloud.tools.endpoints-framework-client'
 
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
@@ -34,6 +35,18 @@ android {
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
+    }
+
+    flavorDimensions "jokes"
+    productFlavors {
+        free {
+            dimension "jokes"
+            applicationIdSuffix ".free"
+        }
+        paid {
+            dimension "jokes"
+            applicationIdSuffix ".paid"
+        }
     }
 }
 
