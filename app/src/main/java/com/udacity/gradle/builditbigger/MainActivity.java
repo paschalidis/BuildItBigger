@@ -1,12 +1,14 @@
 package com.udacity.gradle.builditbigger;
 
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +17,10 @@ import com.example.android.jokeactivity.JokeActivity;
 
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+
+    public final static String IDLING_RESOURCE_LOADER = "JOKE_LOADER";
+
+    CountingIdlingResource mIdlingResource = new CountingIdlingResource(IDLING_RESOURCE_LOADER);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +58,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
+        mIdlingResource.increment();
         return new JokeLoader(this);
     }
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
+        mIdlingResource.decrement();
         startJokeActivity(data);
     }
 
@@ -69,5 +77,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Intent intentToJokeActivity = new Intent(this, JokeActivity.class);
         intentToJokeActivity.putExtra(JokeActivity.JOKE_EXTRA, joke);
         startActivity(intentToJokeActivity);
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new CountingIdlingResource(IDLING_RESOURCE_LOADER);
+        }
+        return mIdlingResource;
     }
 }
