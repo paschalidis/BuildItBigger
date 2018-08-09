@@ -44,7 +44,7 @@ android {
             applicationIdSuffix ".free"
 
             dependencies {
-                implementation 'com.google.android.gms:play-services-ads:15.0.1'
+                freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
             }
         }
         paid {
