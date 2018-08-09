@@ -50,11 +50,13 @@ public class MainActivityParent extends AppCompatActivity implements OnJokeTaskC
     }
 
     public void tellJoke(View view) {
+        mIdlingResource.increment();
         new JokeAsyncTask(this).execute();
     }
 
     @Override
     public void onJokeTaskCompleted(String joke) {
+        mIdlingResource.decrement();
         startJokeActivity(joke);
     }
 
